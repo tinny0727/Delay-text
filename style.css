@@ -127,6 +127,11 @@ h4{
   transform: translateY(-2px);
 }
 
+.question button.selected {
+  background: rgb(93, 220, 25); /* 點選後變綠 */
+  color: #000;
+}
+
 
   #result { margin-top: 30px; font-size: 1.2em; font-weight: bold;
 border-radius: 50% 10% 50% 10%;

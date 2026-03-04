@@ -183,19 +183,28 @@ function showQuestion() {
   container.innerHTML = "";
   
   if (currentQuestion < quizData.length) {
-    const q = quizData[currentQuestion];
-    const qDiv = document.createElement('div');
-    qDiv.className = 'question';
-    qDiv.innerHTML = `<p>${q.question}</p>`;
-    
-    q.options.forEach(option => {
-      const btn = document.createElement('button');
-      btn.innerText = option.text;
-      btn.onclick = () => selectOption(option.value);
-      qDiv.appendChild(btn);
+  const q = quizData[currentQuestion];
+  const qDiv = document.createElement('div');
+  qDiv.className = 'question';
+  qDiv.innerHTML = `<p>${q.question}</p>`;
+
+  q.options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.innerText = option.text;
+
+    btn.onclick = () => {
+      // 清除同題其他按鈕的 selected
+      qDiv.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
       
-    });
-    
+      // 點擊的按鈕加上 selected
+      btn.classList.add('selected');
+
+      // 計分並進下一題
+      selectOption(option.value);
+    };
+
+    qDiv.appendChild(btn);
+  });
     container.appendChild(qDiv);
     updateProgress();
   } else {
