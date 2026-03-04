@@ -1,0 +1,221 @@
+header {
+  background-color: #1a1818;  /* 黑色底 */
+  width: 100%;
+  height: 200px;              /* 根據圖片高度調整 */
+  
+  display: flex;
+  justify-content: center;    /* 水平置中 */
+  align-items: center;        /* 垂直置中 */
+  
+  padding: 0;                 /* 不需要左右間距 */
+  box-sizing: border-box;
+}
+
+header img {
+  max-height: 100%;           /* 讓圖片不超過 header 高度 */
+  width: auto;                /* 保持比例 */
+  object-fit: contain;        /* 保持完整顯示，不裁切 */
+}
+
+
+header a{
+    color: aliceblue;
+    text-decoration: none;
+}
+header a:hover{
+    text-decoration: underline;
+}
+header ul{
+    list-style: none;
+    padding: 0;
+    margin: 30px;
+     display: flex;
+     flex-wrap: wrap;
+    justify-content: center;
+ 
+}
+header li a{
+     display: inline-block; 
+     color: azure;
+    font-size: 30px;
+    line-height: 30px;
+    padding: 30px 30px 20px 30px;
+    height: 40px;
+      font-size: 20px;
+}
+
+.progress-wrap {
+  width: 100%;
+  max-width: 680px;
+  margin: 10px auto 28px;
+}
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: #e6e6e6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: rgb(93, 220, 25);
+  border-radius: 6px;
+  transition: width 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+}
+.progress-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #888;
+  text-align: right;
+  letter-spacing: 0.05em;
+}
+ 
+  h2 {
+  font-size: clamp(42px, 6vw, 72px);
+  margin: 10px 0;
+  text-align: center;
+}
+
+h3 {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h4{
+    color: rgb(0, 0, 0);
+    font-size:large;                                       
+    font-style: normal;  
+    text-align: center; 
+    
+}
+
+
+.question {  
+    margin: 10px;
+    color: rgb(15, 15, 15);
+    font-size: medium;                                       
+    border-radius: 3rem rgb(0, 0, 0);     
+ }
+
+
+
+ .question button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px 18px;
+  font-size: 18px;
+  border: none;
+  border-radius: 20px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.question button:hover {
+  background: rgb(93, 220, 25);
+  transform: translateY(-2px);
+}
+
+
+  #result { margin-top: 30px; font-size: 1.2em; font-weight: bold;
+border-radius: 50% 10% 50% 10%;
+    border: 1px,groove,rgb(0, 0, 0);
+     border-radius: 20px;
+     margin: 20px;
+     color: rgb(0, 0, 0);
+    font-size: 20px;
+    }
+
+   a:hover { background-color: rgb(155, 151, 43); 
+   border-radius: 3rem;
+   font-size: 20px; 
+   text-align: center; 
+   margin: 100px; 
+    padding: 20px;
+      border:3px
+
+   }
+   .score-item {
+  margin-bottom: 16px;
+}
+
+.score-label {
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.score-bg {
+  width: 100%;
+  height: 18px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.score-bar {
+  height: 100%;
+  background: rgb(93, 220, 25); /* 你之後可以每型不同色 */
+  width: 0%;
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+/* 題目框顏色 */
+.question p {
+  background: #ffffff;
+  color: #1a1a1a;
+  text-align: center;
+
+  padding: 30px 28px;
+  border-radius: 18px;
+
+  font-size: 17px;
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+
+  border: 1px solid #e6e6e6;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.06);
+
+  animation: questionFadeIn 0.6s ease-out both;
+  
+}
+@keyframes cardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+}
+
+#personality-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+/* 人格結果卡片質感升級 */
+#personality-text {
+  background: linear-gradient(135deg, #000000, #bbb9b9); /* 漸層背景 */
+  color: #ffffff;  /* 文字顏色 */
+  padding: 10px 30px;
+ text-align: center;
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 500;
+  border-radius: 10px; /* 柔和圓角 */
+  margin: 10px;
+
+}
+
+

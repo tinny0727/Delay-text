@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delay人格測驗</title>
+<link rel="stylesheet" href="style.css">
+<body>
+    <header>
+  <img src="images/biaotou.png" alt="biaotou">
+     
+  
+  </header>
+
+<h2>Delay-<br>人格測驗</h2>
+<h3>快來看看你是哪一型拖延小夥伴吧！
+經常/偶爾/很少</h3>
+
+<div class="progress-wrap">
+  <div class="progress-track">
+    <div id="progress-bar"></div>
+  </div>
+  <div class="progress-text">
+    <span id="current-q">1</span> / <span id="total-q">15</span>
+  </div>
+</div>
+
+<div id="quiz-container"></div>
+<div id="result"></div>
+
+<script>
+// 問題資料
+let score = {
+  avoid: 0,
+  dizzy: 0,
+  anxi: 0,
+  lopie: 0,
+  perfy: 0
+  };
+
+const quizData = [
+  {
+    question: "我總是反覆想著「萬一失敗怎麼辦」而無法集中。",
+    options: [
+      { text: "經常", value: {anxi: 2} },
+      { text: "偶爾", value: {anxi: 1} },
+      { text: "很少", value: {anxi: 0} }
+    ]
+  },
+  {
+  
+     question: "我常因為害怕做不好， 一直將事情往後拖延。",
+    options: [
+      { text: "經常", value: {anxi: 2} },
+      { text: "偶爾", value: {anxi: 1} },
+      { text: "很少", value: {anxi: 0} }
+    ]
+  },
+  {
+     question: "雖然事情並不多，但我會莫名一直感到壓力大。",
+    options: [
+      { text: "經常", value: {anxi: 2} },
+      { text: "偶爾", value: {anxi: 1} },
+      { text: "很少", value: {anxi: 0} }
+    ]
+    
+  },
+   {
+    question: "我很難在同件事上專注超過 15 分鐘以上。",
+    options: [
+      { text: "經常", value: {dizzy: 2} },
+      { text: "偶爾", value: {dizzy: 1} },
+      { text: "很少", value: {dizzy: 0} }
+    ]
+  },
+  {
+  
+     question: "我常在做事時，被手機訊息或小事打斷。",
+    options: [
+      { text: "經常", value: {dizzy: 2} },
+      { text: "偶爾", value: {dizzy: 1} },
+      { text: "很少", value: {dizzy: 0} }
+    ]
+  },
+   {
+    question: "使用介面時我會開很多視窗，結果忘記主要目的。",
+    options: [
+      { text: "經常", value: {dizzy: 2} },
+      { text: "偶爾", value: {dizzy: 1} },
+      { text: "很少", value: {dizzy: 0} }
+    ]
+  },
+  {
+  
+     question: "我會心裡衡量很多選擇，卻導致無法決定。",
+    options: [
+      { text: "經常", value: { lopie: 2} },
+      { text: "偶爾", value: { lopie: 1} },
+      { text: "很少", value: { lopie: 0} }
+    ]
+  },
+   {
+    question: "時不時檢討過去產生的挫折的習慣，使我難以行動。",
+    options: [
+      { text: "經常", value: {lopie: 2} },
+      { text: "偶爾", value: {lopie: 1} },
+      { text: "很少", value: {lopie: 0} }
+    ]
+  },
+  {
+  
+     question: "我時常懷疑自己的能力，導致任務無法執行。",
+    options: [
+      { text: "經常", value: {lopie: 2} },
+      { text: "偶爾", value: {lopie: 1} },
+      { text: "很少", value: {lopie: 0} }
+    ]
+  }, {
+    question: "我常覺得還沒準備好，所以事情做很慢。",
+    options: [
+      { text: "經常", value: {perfy: 2} },
+      { text: "偶爾", value: {perfy: 1} },
+      { text: "很少", value: {perfy: 0} }
+    ]
+  },
+  {
+  
+     question: "製作作品時，我常常修改細節，直到壓線甚至超時。",
+    options: [
+      { text: "經常", value: {perfy: 2} },
+      { text: "偶爾", value: {perfy: 1} },
+      { text: "很少", value: {perfy: 0} }
+    ]
+  },
+   {
+    question: "我會花很多時間和心思準備，卻很難開始。",
+    options: [
+      { text: "經常", value: {perfy: 2} },
+      { text: "偶爾", value: {perfy: 1} },
+      { text: "很少", value: {perfy: 0} }
+    ]
+  },
+  {
+  
+     question: "我會把應該做的主要任務拖到最後。",
+    options: [
+      { text: "經常", value: {avoid: 2} },
+      { text: "偶爾", value: {avoid: 1} },
+      { text: "很少", value: {avoid: 0} }
+    ]
+  },
+  {
+    question: "想到任務帶來的壓力，我會我會轉向處理其他事情。",
+    options: [
+      { text: "經常", value: {avoid: 2} },
+      { text: "偶爾", value: {avoid: 1} },
+      { text: "很少", value: {avoid: 0} }
+    ]
+  },
+  {
+  
+     question: "當我覺得是有風險的任務，我會選擇迴避或無視。",
+    options: [
+      { text: "經常", value: {avoid: 2} },
+      { text: "偶爾", value: {avoid: 1} },
+      { text: "很少", value: {avoid: 0} }
+    ]
+  },
+];
+
+const personalityText = {
+  avoid: "逃避型拖延者：面對壓力時容易選擇先躲開，事情越重要越難開始。",
+  dizzy: "分心型拖延者：注意力容易被拉走，常常在忙，卻忘了最重要的事。",
+  anxi: "焦慮型拖延者：過度擔心結果與失敗，導致行動前就先耗盡能量。",
+  lopie: "內耗型拖延者：想得太多、懷疑自己，遲遲無法做出決定。",
+  perfy: "完美型拖延者：標準太高，準備過頭，反而讓開始變得困難。"
+};
+
+let currentQuestion = 0;
+
+function showQuestion() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = "";
+  
+  if (currentQuestion < quizData.length) {
+    const q = quizData[currentQuestion];
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question';
+    qDiv.innerHTML = `<p>${q.question}</p>`;
+    
+    q.options.forEach(option => {
+      const btn = document.createElement('button');
+      btn.innerText = option.text;
+      btn.onclick = () => selectOption(option.value);
+      qDiv.appendChild(btn);
+    });
+    
+    container.appendChild(qDiv);
+    updateProgress();
+  } else {
+    showResult();
+  }
+}
+
+function selectOption(value) {
+  // 將選項分數加到總分
+  for (let key in value) {
+    score[key] += value[key];
+  }
+  currentQuestion++;
+  showQuestion();
+}
+/* 進度條 */
+function updateProgress() {
+  let percent = ((currentQuestion + 1) / quizData.length) * 100;
+  if(percent > 100) percent = 100;
+  document.getElementById("progress-bar").style.width = percent + "%";
+
+  document.getElementById("current-q").innerText =
+    Math.min(currentQuestion + 1, quizData.length);
+}
+function showResult() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = "";
+  const resultDiv = document.getElementById('result');
+
+  const maxPerType = 6; // 每人格 3 題 × 2 分
+
+  const percentages = {
+    avoid: Math.round((score.avoid / maxPerType) * 100),
+    dizzy: Math.round((score.dizzy / maxPerType) * 100),
+    anxi:  Math.round((score.anxi  / maxPerType) * 100),
+    lopie: Math.round((score.lopie / maxPerType) * 100),
+    perfy: Math.round((score.perfy / maxPerType) * 100)
+  };
+
+  // 🔥 找出最高分人格
+  let topType = "";
+  let topScore = -1;
+
+  for (let key in percentages) {
+    if (percentages[key] > topScore) {
+      topScore = percentages[key];
+      topType = key;
+    }
+  }
+
+
+resultDiv.innerHTML = `
+  <h4>Delay 人格成績單</h4>
+
+  <p id="personality-text">
+    <strong>${personalityText[topType]}</strong>
+  </p>
+
+  <div class="score-item">
+    <div class="score-label">逃避型 ${percentages.avoid}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.avoid}%"></div></div>
+  </div>
+
+  <div class="score-item">
+    <div class="score-label">分心型 ${percentages.dizzy}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.dizzy}%"></div></div>
+  </div>
+
+  <div class="score-item">
+    <div class="score-label">焦慮型 ${percentages.anxi}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.anxi}%"></div></div>
+  </div>
+
+  <div class="score-item">
+    <div class="score-label">內耗型 ${percentages.lopie}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.lopie}%"></div></div>
+  </div>
+
+  <div class="score-item">
+    <div class="score-label">完美型 ${percentages.perfy}%</div>
+    <div class="score-bg"><div class="score-bar" style="width:${percentages.perfy}%"></div></div>
+  </div>
+`;
+  
+}
+
+
+
+// 開始測驗
+showQuestion();
+</script>
+
+</body>
+</html>
