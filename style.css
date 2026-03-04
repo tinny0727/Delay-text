@@ -1,7 +1,7 @@
 header {
   background-color: #1a1818;  /* 黑色底 */
   width: 100%;
-  height: 100%;              /* 根據圖片高度調整 */
+  height: 120px;              /* 根據圖片高度調整 */
   
   display: flex;
   justify-content: center;    /* 水平置中 */
