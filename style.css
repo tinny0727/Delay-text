@@ -10,9 +10,9 @@ header {
 
 /* 圖片響應式 */
 header img {
-  max-height: 200px;         /* 電腦版最大高度 */
+  max-height: 300px;         /* 電腦版最大高度 */
   width: auto;
-  height: 200px;
+  height: 300px;
   object-fit: contain;
 }
 
@@ -162,7 +162,7 @@ border-radius: 50% 10% 50% 10%;
 
 .score-bg {
   width: 100%;
-  height: 18px;
+  height: 15px;
   background: #e0e0e0;
   border-radius: 10px;
   overflow: hidden;
@@ -225,7 +225,9 @@ border-radius: 50% 10% 50% 10%;
   line-height: 1.6;
   font-weight: 500;
   border-radius: 10px; /* 柔和圓角 */
-  margin: 10px;
+  margin: 5px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
 }
 
