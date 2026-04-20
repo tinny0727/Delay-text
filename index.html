@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Delay人格測驗</title>
+<title>Delay小夥伴測驗</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-  <img src="images/biaotou.png" alt="biaotou">
+  <img src="images/baitou.png" alt="biaotou">
    </header>
   
 
-<h2>Delay-<br>人格測驗</h2>
+<h2>Delay小夥伴測驗</h2>
 <h3>快來看看你是哪一型拖延小夥伴吧！
 經常/偶爾/很少</h3>
 
@@ -29,6 +29,42 @@
 <div id="result"></div>
 
 <script>
+ function createGlitchBlocks() {
+    const header = document.querySelector('header');
+    const blockCount = 20; 
+
+    for (let i = 0; i < blockCount; i++) {
+        const block = document.createElement('div');
+        block.className = 'glitch-box';
+
+        const size = Math.random() * 15 + 3;
+        
+        // 邏輯優化：隨機決定方塊出現在 左側 30% 或 右側 30%
+        // 這樣中間 40% 的區塊（字所在的位置）就會保持乾淨
+        let posX;
+        if (Math.random() > 0.5) {
+            posX = Math.random() * 30; // 左側 0~30%
+        } else {
+            posX = Math.random() * 30 + 70; // 右側 70~100%
+        }
+
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 2 + 1.5;
+        const delay = Math.random() * 5;
+
+        block.style.width = `${size}px`;
+        block.style.height = `${size}px`;
+        block.style.left = `${posX}%`;
+        block.style.top = `${posY}%`;
+        block.style.setProperty('--duration', `${duration}s`);
+        block.style.animationDelay = `${delay}s`;
+
+        header.appendChild(block);
+    }
+}
+
+// 頁面載入後執行
+window.addEventListener('DOMContentLoaded', createGlitchBlocks);
 // 問題資料
 let score = {
   avoid: 0,
@@ -40,7 +76,7 @@ let score = {
 
 const quizData = [
   {
-    question: "我總是反覆想著「萬一失敗怎麼辦」而無法集中。",
+    question: "Q1.我總是反覆想著「萬一失敗怎麼辦」而無法集中。",
     options: [
       { text: "經常", value: {anxi: 2} },
       { text: "偶爾", value: {anxi: 1} },
@@ -49,7 +85,7 @@ const quizData = [
   },
   {
   
-     question: "我常因為害怕做不好， 一直將事情往後拖延。",
+     question: "Q2.我常因為害怕做不好， 一直將事情往後拖延。",
     options: [
       { text: "經常", value: {anxi: 2} },
       { text: "偶爾", value: {anxi: 1} },
@@ -57,7 +93,7 @@ const quizData = [
     ]
   },
   {
-     question: "雖然事情並不多，但我會莫名一直感到壓力大。",
+     question: "Q3.雖然事情並不多，但我會莫名一直感到壓力大。",
     options: [
       { text: "經常", value: {anxi: 2} },
       { text: "偶爾", value: {anxi: 1} },
@@ -66,7 +102,7 @@ const quizData = [
     
   },
    {
-    question: "我很難在同件事上專注超過 15 分鐘以上。",
+    question: "Q4.我很難在同件事上專注超過 15 分鐘以上。",
     options: [
       { text: "經常", value: {dizzy: 2} },
       { text: "偶爾", value: {dizzy: 1} },
@@ -75,7 +111,7 @@ const quizData = [
   },
   {
   
-     question: "我常在做事時，被手機訊息或小事打斷。",
+     question: "Q5.我常在做事時，被手機訊息或小事打斷。",
     options: [
       { text: "經常", value: {dizzy: 2} },
       { text: "偶爾", value: {dizzy: 1} },
@@ -83,7 +119,7 @@ const quizData = [
     ]
   },
    {
-    question: "使用介面時我會開很多視窗，結果忘記主要目的。",
+    question: "Q6.使用介面時我會開很多視窗，結果忘記主要目的。",
     options: [
       { text: "經常", value: {dizzy: 2} },
       { text: "偶爾", value: {dizzy: 1} },
@@ -92,7 +128,7 @@ const quizData = [
   },
   {
   
-     question: "我會心裡衡量很多選擇，卻導致無法決定。",
+     question: "Q7.我會心裡衡量很多選擇，卻導致無法決定。",
     options: [
       { text: "經常", value: { lopie: 2} },
       { text: "偶爾", value: { lopie: 1} },
@@ -100,7 +136,7 @@ const quizData = [
     ]
   },
    {
-    question: "時不時檢討過去產生的挫折的習慣，使我難以行動。",
+    question: "Q8.時不時檢討過去產生的挫折的習慣，使我難以行動。",
     options: [
       { text: "經常", value: {lopie: 2} },
       { text: "偶爾", value: {lopie: 1} },
@@ -109,14 +145,14 @@ const quizData = [
   },
   {
   
-     question: "我時常懷疑自己的能力，導致任務無法執行。",
+     question: "Q9.我時常懷疑自己的能力，導致任務無法執行。",
     options: [
       { text: "經常", value: {lopie: 2} },
       { text: "偶爾", value: {lopie: 1} },
       { text: "很少", value: {lopie: 0} }
     ]
   }, {
-    question: "我常覺得還沒準備好，所以事情做很慢。",
+    question: "Q10.我常覺得還沒準備好，所以事情做很慢。",
     options: [
       { text: "經常", value: {perfy: 2} },
       { text: "偶爾", value: {perfy: 1} },
@@ -125,7 +161,7 @@ const quizData = [
   },
   {
   
-     question: "製作作品時，我常常修改細節，直到壓線甚至超時。",
+     question: "Q11.製作作品時，我常常修改細節，直到壓線甚至超時。",
     options: [
       { text: "經常", value: {perfy: 2} },
       { text: "偶爾", value: {perfy: 1} },
@@ -133,7 +169,7 @@ const quizData = [
     ]
   },
    {
-    question: "我會花很多時間和心思準備，卻很難開始。",
+    question: "Q12.我會花很多時間和心思準備，卻很難開始。",
     options: [
       { text: "經常", value: {perfy: 2} },
       { text: "偶爾", value: {perfy: 1} },
@@ -142,7 +178,7 @@ const quizData = [
   },
   {
   
-     question: "我會把應該做的主要任務拖到最後。",
+     question: "Q13.我會把應該做的主要任務拖到最後。",
     options: [
       { text: "經常", value: {avoid: 2} },
       { text: "偶爾", value: {avoid: 1} },
@@ -150,7 +186,7 @@ const quizData = [
     ]
   },
   {
-    question: "想到任務帶來的壓力，我會我會轉向處理其他事情。",
+    question: "Q14.想到任務帶來的壓力，我會我會轉向處理其他事情。",
     options: [
       { text: "經常", value: {avoid: 2} },
       { text: "偶爾", value: {avoid: 1} },
@@ -159,7 +195,7 @@ const quizData = [
   },
   {
   
-     question: "當我覺得是有風險的任務，我會選擇迴避或無視。",
+     question: "Q15.當我覺得是有風險的任務，我會選擇迴避或無視。",
     options: [
       { text: "經常", value: {avoid: 2} },
       { text: "偶爾", value: {avoid: 1} },
@@ -195,10 +231,19 @@ function showQuestion() {
     btn.onclick = () => {
       // 清除同題其他按鈕的 selected
       qDiv.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+
       
       // 點擊的按鈕加上 selected
       btn.classList.add('selected');
-
+// 2. 使用 setTimeout 產生短暫延遲
+      // 這讓使用者在手機上能看到「按鈕變黑」的選中效果，隨後才跳轉
+      setTimeout(() => {
+        selectOption(option.value); // 計分並觸發 showQuestion()
+        
+        // 核心原理：當 selectOption 執行完畢，showQuestion 會清空 container 
+        // 重新生成新一題的 HTML，所以舊按鈕的 selected 顏色會自然消失。
+      }, 250); 
+    
       // 計分並進下一題
       selectOption(option.value);
     };
@@ -232,64 +277,83 @@ function updateProgress() {
 function showResult() {
   const container = document.getElementById('quiz-container');
   container.innerHTML = "";
-  const resultDiv = document.getElementById('result');
-
-  const maxPerType = 6; // 每人格 3 題 × 2 分
-
-  const percentages = {
-    avoid: Math.round((score.avoid / maxPerType) * 100),
-    dizzy: Math.round((score.dizzy / maxPerType) * 100),
-    anxi:  Math.round((score.anxi  / maxPerType) * 100),
-    lopie: Math.round((score.lopie / maxPerType) * 100),
-    perfy: Math.round((score.perfy / maxPerType) * 100)
-  };
-
-  // 🔥 找出最高分人格
-  let topType = "";
-  let topScore = -1;
-
-  for (let key in percentages) {
-    if (percentages[key] > topScore) {
-      topScore = percentages[key];
-      topType = key;
-    }
-  }
-
-
-resultDiv.innerHTML = `
-  <h4>Delay 人格成績單</h4>
-
-  <p id="personality-text">
-    <strong>${personalityText[topType]}</strong>
-  </p>
-
-  <div class="score-item">
-    <div class="score-label">逃避型 ${percentages.avoid}%</div>
-    <div class="score-bg"><div class="score-bar" style="width:${percentages.avoid}%"></div></div>
-  </div>
-
-  <div class="score-item">
-    <div class="score-label">分心型 ${percentages.dizzy}%</div>
-    <div class="score-bg"><div class="score-bar" style="width:${percentages.dizzy}%"></div></div>
-  </div>
-
-  <div class="score-item">
-    <div class="score-label">焦慮型 ${percentages.anxi}%</div>
-    <div class="score-bg"><div class="score-bar" style="width:${percentages.anxi}%"></div></div>
-  </div>
-
-  <div class="score-item">
-    <div class="score-label">內耗型 ${percentages.lopie}%</div>
-    <div class="score-bg"><div class="score-bar" style="width:${percentages.lopie}%"></div></div>
-  </div>
-
-  <div class="score-item">
-    <div class="score-label">完美型 ${percentages.perfy}%</div>
-    <div class="score-bg"><div class="score-bar" style="width:${percentages.perfy}%"></div></div>
-  </div>
-`;
   
+  // 1. 顯示「計算中」動畫
+  const loadingDiv = document.createElement('div');
+  loadingDiv.className = 'loading-container';
+  loadingDiv.innerHTML = `
+    <div class="spinner"></div>
+    <p>嘟嘟嘟...正在分析你的拖延小夥伴...</p>
+  `;
+  container.appendChild(loadingDiv);
+
+  // 2. 延遲 1.5 秒後顯示結果
+  setTimeout(() => {
+    container.innerHTML = ""; // 清除載入動畫
+    const resultDiv = document.getElementById('result');
+
+    const maxPerType = 6;
+    const percentages = {
+      avoid: Math.round((score.avoid / maxPerType) * 100),
+      dizzy: Math.round((score.dizzy / maxPerType) * 100),
+      anxi:  Math.round((score.anxi  / maxPerType) * 100),
+      lopie: Math.round((score.lopie / maxPerType) * 100),
+      perfy: Math.round((score.perfy / maxPerType) * 100)
+    };
+
+    // 找出最高分
+    let topType = Object.keys(percentages).reduce((a, b) => percentages[a] > percentages[b] ? a : b);
+
+    // 計算雷達圖點位 (五角形)
+    // 假設中心點為 (100, 100)，半徑為 80
+    const points = [
+      getPoint(100, 100, 68 * (percentages.anxi/100), 0),   // 頂 (焦慮)
+      getPoint(100, 100, 68 * (percentages.perfy/100), 72),  // 右上 (完美)
+      getPoint(100, 100, 68 * (percentages.avoid/100), 144), // 右下 (逃避)
+      getPoint(100, 100, 68 * (percentages.dizzy/100), 216), // 左下 (分心)
+      getPoint(100, 100, 68 * (percentages.lopie/100), 288)  // 左上 (內耗)
+    ];
+    const polyPoints = points.map(p => `${p.x},${p.y}`).join(' ');
+
+    resultDiv.innerHTML = `
+      <div class="result-card">
+        <h4>Delay 拖延分析報告</h4>
+        
+        <div class="radar-chart">
+  <svg viewBox="-40 -40 280 280" style="overflow: visible; width: 100%; max-width: 350px;">
+    <polygon points="100,20 176,75 147,164 53,164 24,75" class="grid-bg"/>
+    <polygon points="100,60 138,87 123,132 77,132 62,87" class="grid-bg"/>
+    
+    <polygon points="${polyPoints}" class="data-poly"/>
+    
+    <text x="100" y="5" text-anchor="middle">焦慮</text> 
+    <text x="195" y="75" text-anchor="start">完美</text>
+    <text x="165" y="195" text-anchor="middle">逃避</text>
+    <text x="35" y="195" text-anchor="middle">分心</text>
+    <text x="5" y="75" text-anchor="end">內耗</text>
+  </svg>
+</div>
+
+        <div class="top-result-badge">你的小夥伴：${personalityText[topType].split('：')[0]}</div>
+        <p class="personality-desc">${personalityText[topType]}</p>
+        
+        <button onclick="window.location.reload()" class="retry-btn">重新測驗</button>
+      </div>
+    `;
+  }, 1500);
 }
+
+// 輔助函數：計算圓周上的坐標
+function getPoint(cx, cy, r, angle) {
+  const rad = (angle - 90) * (Math.PI / 180);
+  return {
+    x: cx + r * Math.cos(rad),
+    y: cy + r * Math.sin(rad)
+  };
+}
+  
+
+
 
 
 
