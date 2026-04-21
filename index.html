@@ -219,37 +219,36 @@ function showQuestion() {
   container.innerHTML = "";
   
   if (currentQuestion < quizData.length) {
-  const q = quizData[currentQuestion];
-  const qDiv = document.createElement('div');
-  qDiv.className = 'question';
-  qDiv.innerHTML = `<p>${q.question}</p>`;
+    const q = quizData[currentQuestion];
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question';
+    qDiv.innerHTML = `<p>${q.question}</p>`;
 
-  q.options.forEach(option => {
-    const btn = document.createElement('button');
-    btn.innerText = option.text;
+    q.options.forEach(option => {
+      const btn = document.createElement('button');
+      btn.innerText = option.text;
 
-    btn.onclick = () => {
-      // 清除同題其他按鈕的 selected
-      qDiv.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+      btn.onclick = () => {
+        // 1. 防止重複點擊：一旦點了就暫時停用所有按鈕
+        const allButtons = qDiv.querySelectorAll('button');
+        allButtons.forEach(b => {
+          b.style.pointerEvents = 'none';
+          b.classList.remove('selected');
+        });
 
-      
-      // 點擊的按鈕加上 selected
-      btn.classList.add('selected');
-// 2. 使用 setTimeout 產生短暫延遲
-      // 這讓使用者在手機上能看到「按鈕變黑」的選中效果，隨後才跳轉
-      setTimeout(() => {
-        selectOption(option.value); // 計分並觸發 showQuestion()
-        
-        // 核心原理：當 selectOption 執行完畢，showQuestion 會清空 container 
-        // 重新生成新一題的 HTML，所以舊按鈕的 selected 顏色會自然消失。
-      }, 250); 
+        // 2. 加上選中效果
+        btn.classList.add('selected');
+
+        // 3. 只在延遲後執行一次計分與跳轉
+        setTimeout(() => {
+          // 這裡直接傳入當前 option 的值，確保邏輯正確
+          selectOption(option.value); 
+        }, 250); 
+      };
+
+      qDiv.appendChild(btn);
+    });
     
-      // 計分並進下一題
-      selectOption(option.value);
-    };
-
-    qDiv.appendChild(btn);
-  });
     container.appendChild(qDiv);
     updateProgress();
   } else {
