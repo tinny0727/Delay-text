@@ -1,12 +1,19 @@
 header {
-  background-color: #1a1818; /* 黑色底 */
+  background-color: #333232; ; /* 黑色底 */
   width: 100%;
   padding: 10px 0;           /* 上下留白 */
   display: flex;
   justify-content: center;   /* 水平置中 */
   align-items: center;       /* 垂直置中 */
   box-sizing: border-box;
+    position: relative; /* 必須：讓內部的 absolute 方塊以 header 為基準定位 */
+    overflow: hidden;    /* 必須：超出 header 範圍的方塊會被隱藏，不會閃到外面 */
+    
+    /* 確保 header 有高度，否則方塊會疊在一起看不見 */
+    min-height: 300px;  /* 根據你的需求調整 */
 }
+
+
 
 /* 圖片響應式 */
 header img {
@@ -14,18 +21,21 @@ header img {
   width: auto;
   height: 500px;
   object-fit: contain;
+  position: relative;
+  z-index: 2; /* 讓圖片在方塊上方 */
 }
 
-/* 方塊的基本樣式 */
 .glitch-box {
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.8);
+    /* 修正：讀取 JS 傳進來的 --bg-color 變數 */
+    background-color: var(--bg-color, rgba(255, 255, 255, 0.8));
     z-index: 1;
-    pointer-events: none; /* 防止干擾點擊 */
+    pointer-events: none;
+    /* 這裡保留 var(--duration)，我們會從 JS 傳進去 */
     animation: blink var(--duration) infinite ease-in-out;
+    border-radius: 2px; /* 加一點點圓角質感更好 */
 }
 
-/* 閃爍動畫 */
 @keyframes blink {
     0%, 100% { opacity: 0; transform: scale(0.5); }
     50% { opacity: 1; transform: scale(1.1); }
@@ -113,7 +123,7 @@ h3 {
 }
 
 h4{
-    color: rgb(0, 0, 0);
+    color: #333232;
     font-size:20px;                                       
     font-style: normal;  
     text-align: center; 
@@ -123,7 +133,7 @@ h4{
 
 .question {  
     margin: 10px;
-    color: rgb(0, 0, 0);
+    color: 333232;
     font-size: 20px;
    font-style: inherit;                                      
     border-radius: 4rem rgb(0, 0, 0);     
@@ -140,7 +150,7 @@ h4{
   border: none;
   border-radius: 20px;
   background: hsl(0, 0%, 100%);
-  color: #000000;
+  color: #333232;
   border: 1px solid #000000; /* 加入 2px 的黑色實線外框 */
   cursor: pointer;
   transition: background 0.25s ease, transform 0.15s ease;
@@ -202,7 +212,7 @@ border-radius: 50% 10% 50% 10%;
 
 /* 題目框顏色 */
 .question p {
-  background: #000000;
+  background: #333232;
   color: #ffffff;
   text-align: center;
 
@@ -312,9 +322,9 @@ svg text {
 
 .top-result-badge {
   display: inline-block;
-  background: #000;
-  border-top: 1.5px solid #000;
-  border-bottom: 1.5px solid #000;
+  background: #333232;
+  border-top: 1.5px solid  #333232;
+  border-bottom: 1.5px solid  #333232;
   color: #fff;
   padding: 12px 30px;
   /* 縮小字體：從 1.4rem 改為 1.1rem ~ 1.2rem */
@@ -336,7 +346,6 @@ svg text {
   left: 4px;
   width: 100%;
   height: 100%;
-  border: 1px solid #000;
   z-index: -1;
   clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
 }

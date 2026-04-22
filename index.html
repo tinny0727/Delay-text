@@ -31,6 +31,8 @@
 <script>
  function createGlitchBlocks() {
     const header = document.querySelector('header');
+    if (!header) return;
+
     const blockCount = 20; 
 
     for (let i = 0; i < blockCount; i++) {
@@ -39,29 +41,35 @@
 
         const size = Math.random() * 15 + 3;
         
-        // 邏輯優化：隨機決定方塊出現在 左側 30% 或 右側 30%
-        // 這樣中間 40% 的區塊（字所在的位置）就會保持乾淨
-        let posX;
-        if (Math.random() > 0.5) {
-            posX = Math.random() * 30; // 左側 0~30%
-        } else {
-            posX = Math.random() * 30 + 70; // 右側 70~100%
-        }
-
+        // --- 1. 顏色邏輯 ---
+        const isWhite = Math.random() > 0.7; 
+        const bgColor = isWhite ? 'rgb(250, 250, 250)' : 'rgba(59, 189, 45, 0.78)';
+        
+        // --- 2. 左右分布邏輯 ---
+        let posX = Math.random() > 0.5 ? Math.random() * 30 : Math.random() * 30 + 70;
         const posY = Math.random() * 100;
-        const duration = Math.random() * 2 + 1.5;
-        const delay = Math.random() * 5;
 
+        // --- 3. 動畫參數 ---
+        const duration = Math.random() * 2 + 1.5;
+        const delay = Math.random() * -5; // 負值讓它立即出現
+
+        // --- 4. 變數注入與樣式 ---
         block.style.width = `${size}px`;
         block.style.height = `${size}px`;
         block.style.left = `${posX}%`;
         block.style.top = `${posY}%`;
+        
+        // 關鍵：將變數傳遞給 CSS
+        block.style.setProperty('--bg-color', bgColor);
         block.style.setProperty('--duration', `${duration}s`);
         block.style.animationDelay = `${delay}s`;
 
         header.appendChild(block);
     }
 }
+
+// 記得執行它！
+createGlitchBlocks();
 
 // 頁面載入後執行
 window.addEventListener('DOMContentLoaded', createGlitchBlocks);
