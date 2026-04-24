@@ -1,5 +1,5 @@
 header {
-  background-color: #333232; ; /* 黑色底 */
+  background-color: #000000; ; /* 黑色底 */
   width: 100%;
   padding: 10px 0;           /* 上下留白 */
   display: flex;
@@ -123,7 +123,7 @@ h3 {
 }
 
 h4{
-    color: #333232;
+    color: #000000;
     font-size:20px;                                       
     font-style: normal;  
     text-align: center; 
@@ -150,7 +150,7 @@ h4{
   border: none;
   border-radius: 20px;
   background: hsl(0, 0%, 100%);
-  color: #333232;
+  color: #000000;
   border: 1px solid #000000; /* 加入 2px 的黑色實線外框 */
   cursor: pointer;
   transition: background 0.25s ease, transform 0.15s ease;
@@ -212,7 +212,7 @@ border-radius: 50% 10% 50% 10%;
 
 /* 題目框顏色 */
 .question p {
-  background: #333232;
+  background: #000000;
   color: #ffffff;
   text-align: center;
 
@@ -322,9 +322,9 @@ svg text {
 
 .top-result-badge {
   display: inline-block;
-  background: #333232;
-  border-top: 1.5px solid  #333232;
-  border-bottom: 1.5px solid  #333232;
+  background: #000000;
+  border-top: 1.5px solid  #000000;
+  border-bottom: 1.5px solid  #000000;
   color: #fff;
   padding: 12px 30px;
   /* 縮小字體：從 1.4rem 改為 1.1rem ~ 1.2rem */
