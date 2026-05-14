@@ -1,5 +1,5 @@
 header {
-  background-color: #000000; ; /* 黑色底 */
+  background-color: #000000;  /* 黑色底 */
   width: 100%;
   padding: 10px 0;           /* 上下留白 */
   display: flex;
@@ -15,14 +15,28 @@ header {
 
 
 
-/* 圖片響應式 */
 header img {
-  max-height: 400px;         /* 電腦版最大高度 */
   width: auto;
-  height: 500px;
+  /* 電腦版高度維持，但使用 max-width 確保不超出螢幕 */
+  max-width: 90%; 
+  height: auto;
+  max-height: 400px;
   object-fit: contain;
   position: relative;
-  z-index: 2; /* 讓圖片在方塊上方 */
+  z-index: 2;
+  transition: all 0.3s ease; /* 縮放時更平滑 */
+}
+
+/* 當螢幕寬度小於 600px（手機版）時 */
+@media (max-width: 600px) {
+  header {
+    min-height: 200px; /* 手機版 header 稍微縮短 */
+  }
+  
+  header img {
+    max-height: 250px; /* 提高手機版圖片的最小視覺佔比 */
+    max-width: 95%;
+  }
 }
 
 .glitch-box {
@@ -131,35 +145,37 @@ h4{
 }
 
 
-.question {  
-    margin: 10px;
-    color: 333232;
-    font-size: 20px;
-   font-style: inherit;                                      
-    border-radius: 4rem rgb(0, 0, 0);     
- }
-
-
-
-
- .question button {
-  width: 100%;
-  margin: 10px 0;
-  padding: 14px 18px;
-  font-size: 18px;
-  border: none;
-  border-radius: 20px;
-  background: hsl(0, 0%, 100%);
-  color: #000000;
-  border: 1px solid #000000; /* 加入 2px 的黑色實線外框 */
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.15s ease;
+.question{
+  max-width:600px;
+  margin:0 auto 20px;
 }
 
-.question button:hover {
-  background: rgb(93, 220, 25);
-  transform: translateY(-2px);
+.question p {
+  background: #000;
+  color: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center; /* 鍔犲叆閫欎竴琛岃畵鏂囧瓧缃腑 */
 }
+
+.question button{
+  width:100%;
+  margin:8px 0;
+  padding:14px;
+  font-size:16px;
+  border-radius:20px;
+  border:2px solid #000;
+  background:#fff;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.question button:hover{
+  background:var(--main-green);
+}
+
 
 .question button.selected {
   background: rgb(93, 220, 25); /* 點選後變綠 */
@@ -254,6 +270,39 @@ border-radius: 50% 10% 50% 10%;
   100% { transform: rotate(360deg); }
 }
 
+/* 修改這段來控制結果頁的角色圖 */
+.character-illustration img {
+    width: 160px !important; /* 調大尺寸，更有視覺衝擊力 */
+    text-align: center !important;
+    /* 增加底部間距，把圖片往上推 */
+    margin-top: 10px !important;
+    margin-bottom: 30px !important;
+    transform: translateY(-15px);
+    height: auto !important;
+    object-fit: contain;
+    filter: drop-shadow(6px 6px 0px rgba(0,0,0,0.15));
+    
+    /* 加上你剛才提到的浮動動畫 */ position: relative;
+    z-index: 2; /* 確保角色在背景大字上方 */
+}
+
+@keyframes peekFloat {
+    0%, 100% { transform: translateY(0) rotate(2deg); }
+    50% { transform: translateY(-10px) rotate(-2deg); }
+}
+
+.character-peek img {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.2));
+  animation: peekFloat 3s ease-in-out infinite;
+}
+
+@keyframes peekFloat {
+  0%, 100% { transform: translateY(0) rotate(5deg); }
+  50% { transform: translateY(-10px) rotate(10deg); }
+}
 /* 雷達圖樣式 */
 .radar-chart {
   width: 250px;
@@ -267,7 +316,7 @@ border-radius: 50% 10% 50% 10%;
 }
 
 .data-poly {
-  fill: rgba(0, 0, 0, 0.2);
+  fill: rgba(0, 0, 0, 0.44);
   stroke: #000;
   stroke-width: 2;
   stroke-linejoin: round;
@@ -280,7 +329,7 @@ svg text {
 }
 /* 讓多邊形有從中心長出來的感覺 */
 .data-poly {
-  fill: rgba(0, 0, 0, 0.2);
+  fill: rgb(93, 220, 25);;
   stroke: #000;
   stroke-width: 1;
   stroke-linejoin: round;
@@ -303,7 +352,7 @@ svg text {
 
 /* 讓雷達圖上的文字也晚一點點出現 */
 svg text {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   fill: #333;
   opacity: 0;
@@ -315,53 +364,147 @@ svg text {
 }
 
 /* 成績單卡片美化 */
+/* --- 結果卡片主體微調 --- */
+/* 報告書背景：加入格紋與邊框裝飾 */
+/* --- 1. 報告書主體：增加網格背景與檔案厚度感 --- */
 .result-card {
-  animation: fadeInUp 0.8s ease forwards;
-  text-align: center;
+    background-color: #ffffff;
+    /* 模擬方格紙感 */
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border: 3px solid #000;
+    box-shadow: 12px 12px 0px #000;
+    padding: 60px 25px 40px;
+    position: relative;
+    max-width: 500px;
+    margin: 60px auto 30px;
+    animation: fadeInUp 0.8s ease forwards;
 }
 
-.top-result-badge {
-  display: inline-block;
-  background: #000000;
-  border-top: 1.5px solid  #000000;
-  border-bottom: 1.5px solid  #000000;
-  color: #fff;
-  padding: 12px 30px;
-  /* 縮小字體：從 1.4rem 改為 1.1rem ~ 1.2rem */
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  /* 刷出不規則的切角感 */
-  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
-  position: relative;
-  margin: 20px 0;
+/* --- 2. 檔案細節：運用虛擬元素增加「官方認證」印章 --- */
+/* --- 強化報告書左側平衡 --- */
+.result-card::before {
+    content: "";
+    position: absolute;
+    left: 15px;      /* 靠左距離 */
+    top: 50px;       /* 與右邊標籤對齊 */
+    bottom: 50px;    /* 延伸至下方 */
+    width: 1px;
+    background: linear-gradient(to bottom, 
+        rgba(0,0,0,0.5) 0%, 
+        rgba(0,0,0,0.1) 50%, 
+        rgba(0,0,0,0.5) 100%);
+    opacity: 0.3;
+    z-index: 1;
 }
 
-/* 加一個錯位的邊框感 */
-.top-result-badge::after {
-  content: '';
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+/* 在左側線條旁加一個旋轉的裝飾文字 */
+.result-card .left-index {
+    position: absolute;
+    left: 5px;
+    top: 100px;
+    writing-mode: vertical-rl;
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    color: #bbb;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transform: rotate(180deg); /* 讓文字方向由下而上 */
+    z-index: 1;
 }
 
+/* 檔案右上角的編號（LOPIE 專屬感覺） */
+.result-card::after {
+    content: "DE-FILE NO. 004-LP";
+    position: absolute;
+    
+    /* 對齊邏輯： */
+    /* top 應該等於或略小於卡片的 padding-top */
+    top: 20px; 
+    /* right 應該等於卡片的 padding-right，確保跟內容右緣對齊 */
+    right: 15px; 
+    
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #999;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* --- 角色標籤：同樣靠右對齊 --- */
+/* --- 3. 角色標籤：超大直式半透明風格 --- */
+
+
+/* --- 4. 內文排版：增加標題裝飾 --- */
+.personality-content p[style*="font-weight: bold"] {
+    border-bottom: 2px solid #000;
+    display: inline-block;
+    padding-bottom: 5%;
+    margin-bottom: 20px !important;
+    position: relative;
+    z-index: 2; 
+}
+
+/* --- 5. 能量解藥：紙膠帶與波浪底線效果 --- */
+.personality-content div[style*="background"] {
+    background: #fff !important;
+    border: 2px solid #000 !important;
+    box-shadow: 6px 6px 0px rgb(93, 220, 25) !important;
+    padding: 25px 20px 20px !important;
+    margin-top: 30px !important;
+    position: relative !important;
+    transform: rotate(0.5deg);
+    border-left: none !important; /* 移除原本的綠色側邊 */
+}
+
+/* 模擬紙膠帶裝飾 */
+.personality-content div[style*="background"]::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 24px;
+    background: rgba(93, 220, 25, 0.4); /* 半透明螢光綠 */
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+/* 強化解藥標題 */
+.personality-content div strong {
+    font-size: 13px;
+    text-decoration: underline wavy rgb(93, 220, 25); /* 螢光綠波浪底線 */
+    display: block;
+    margin-bottom: 8px;
+}
+
+.download-btn,
 .retry-btn {
-  margin-top: 30px;
-  background: none;
-  border: 1px solid #ccc;
-  padding: 10px 20px;
-  border-radius: 20px;
+  background: var(--main-green);
+  border: 2px solid #000;
+  padding: 12px 24px;
+  border-radius: 40px;
+  font-weight: bold;
   cursor: pointer;
+  margin: 10px 5px;
+  box-shadow: 4px 4px 0 #000;
+  transition: all 0.2s ease; /* 澧炲姞骞虫粦閬庢浮 */
+  display: inline-block;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* 淇 Hover 闊挎噳 */
+.download-btn:hover,
+.retry-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #000;
+  background: #fff; /* 鎳稿仠鏅傝畩鑹� */
+  color: #000;
 }
 
-
+.download-btn:active,
+.retry-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #000;
+}
