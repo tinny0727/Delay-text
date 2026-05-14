@@ -165,6 +165,7 @@ h4{
   margin:8px 0;
   padding:14px;
   font-size:16px;
+  color: #000 !important;
   border-radius:20px;
   border:2px solid #000;
   background:#fff;
@@ -492,6 +493,7 @@ svg text {
   box-shadow: 4px 4px 0 #000;
   transition: all 0.2s ease; /* 澧炲姞骞虫粦閬庢浮 */
   display: inline-block;
+   color: #000;
 }
 
 /* 淇 Hover 闊挎噳 */
