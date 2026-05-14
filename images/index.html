@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delay小夥伴測驗</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <header>
+  <img src="images/baitou.png" alt="biaotou">
+   </header>
+  
+
+<h2>Delay小夥伴測驗</h2>
+<h3>快來看看你是哪一型拖延小夥伴吧！
+經常/偶爾/很少</h3>
+
+<div class="progress-wrap">
+  <div class="progress-track">
+    <div id="progress-bar"></div>
+  </div>
+  <div class="progress-text">
+    <span id="current-q">1</span> / <span id="total-q">15</span>
+  </div>
+</div>
+
+<div id="quiz-container"></div>
+<div id="result"></div>
+
+<script>
+// --- 1. 背景特效 ---
+// --- 1. 背景特效 ---
+function createGlitchBlocks() {
+    const header = document.querySelector('header');
+    if (!header) return;
+    const blockCount = 20; 
+    for (let i = 0; i < blockCount; i++) {
+        const block = document.createElement('div');
+        block.className = 'glitch-box';
+        const size = Math.random() * 15 + 3;
+        const isWhite = Math.random() > 0.7; 
+        const bgColor = isWhite ? 'rgb(250, 250, 250)' : 'rgba(59, 189, 45, 0.78)';
+        let posX = Math.random() > 0.5 ? Math.random() * 30 : Math.random() * 30 + 70;
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 2 + 1.5;
+        const delay = Math.random() * -5;
+        block.style.width = `${size}px`;
+        block.style.height = `${size}px`;
+        block.style.left = `${posX}%`;
+        block.style.top = `${posY}%`;
+        block.style.setProperty('--bg-color', bgColor);
+        block.style.setProperty('--duration', `${duration}s`);
+        block.style.animationDelay = `${delay}s`;
+        header.appendChild(block);
+    }
+}
+window.addEventListener('DOMContentLoaded', createGlitchBlocks);
+
+// --- 2. 測驗資料與狀態 ---
+let score = { avoid: 0, dizzy: 0, anxi: 0, lopie: 0, perfy: 0 };
+let currentQuestion = 0;
+
+const quizData = [
+  { question: "Q1.我總是反覆想著「萬一失敗怎麼辦」而無法集中。", options: [{ text: "經常", value: {anxi: 2} }, { text: "偶爾", value: {anxi: 1} }, { text: "很少", value: {anxi: 0} }] },
+  { question: "Q2.我常因為害怕做不好， 一直將事情往後拖延。", options: [{ text: "經常", value: {anxi: 2} }, { text: "偶爾", value: {anxi: 1} }, { text: "很少", value: {anxi: 0} }] },
+  { question: "Q3.雖然事情並不多，但我會莫名一直感到壓力大。", options: [{ text: "經常", value: {anxi: 2} }, { text: "偶爾", value: {anxi: 1} }, { text: "很少", value: {anxi: 0} }] },
+  { question: "Q4.我很難在同件事上專注超過 15 分鐘以上。", options: [{ text: "經常", value: {dizzy: 2} }, { text: "偶爾", value: {dizzy: 1} }, { text: "很少", value: {dizzy: 0} }] },
+  { question: "Q5.我常在做事時，被手機訊息或小事打斷。", options: [{ text: "經常", value: {dizzy: 2} }, { text: "偶爾", value: {dizzy: 1} }, { text: "很少", value: {dizzy: 0} }] },
+  { question: "Q6.使用介面時我會開很多視窗，結果忘記主要目的。", options: [{ text: "經常", value: {dizzy: 2} }, { text: "偶爾", value: {dizzy: 1} }, { text: "很少", value: {dizzy: 0} }] },
+  { question: "Q7.我會心裡衡量很多選擇，卻導致無法決定。", options: [{ text: "經常", value: { lopie: 2} }, { text: "偶爾", value: { lopie: 1} }, { text: "很少", value: { lopie: 0} }] },
+  { question: "Q8.時不時檢討過去產生的挫折的習慣，使我難以行動。", options: [{ text: "經常", value: {lopie: 2} }, { text: "偶爾", value: {lopie: 1} }, { text: "很少", value: {lopie: 0} }] },
+  { question: "Q9.我時常懷疑自己的能力，導致任務無法執行。", options: [{ text: "經常", value: {lopie: 2} }, { text: "偶爾", value: {lopie: 1} }, { text: "很少", value: {lopie: 0} }] },
+  { question: "Q10.我常覺得還沒準備好，所以事情做很慢。", options: [{ text: "經常", value: {perfy: 2} }, { text: "偶爾", value: {perfy: 1} }, { text: "很少", value: {perfy: 0} }] },
+  { question: "Q11.製作作品時，我常常修改細節，直到壓線甚至超時。", options: [{ text: "經常", value: {perfy: 2} }, { text: "偶爾", value: {perfy: 1} }, { text: "很少", value: {perfy: 0} }] },
+  { question: "Q12.我會花很多時間和心思準備，卻很難開始。", options: [{ text: "經常", value: {perfy: 2} }, { text: "偶爾", value: {perfy: 1} }, { text: "很少", value: {perfy: 0} }] },
+  { question: "Q13.我會把應該做的主要任務拖到最後。", options: [{ text: "經常", value: {avoid: 2} }, { text: "偶爾", value: {avoid: 1} }, { text: "很少", value: {avoid: 0} }] },
+  { question: "Q14.想到任務帶來的壓力，我會轉向處理其他事情。", options: [{ text: "經常", value: {avoid: 2} }, { text: "偶爾", value: {avoid: 1} }, { text: "很少", value: {avoid: 0} }] },
+  { question: "Q15.當我覺得是有風險的任務，我會選擇迴避或無視。", options: [{ text: "經常", value: {avoid: 2} }, { text: "偶爾", value: {avoid: 1} }, { text: "很少", value: {avoid: 0} }] }
+];
+
+// --- 3. 邏輯函式 ---
+function showQuestion() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = "";
+  if (currentQuestion < quizData.length) {
+    const q = quizData[currentQuestion];
+    const qDiv = document.createElement('div');
+    qDiv.className = 'question';
+    qDiv.innerHTML = `<p>${q.question}</p>`;
+    q.options.forEach(option => {
+      const btn = document.createElement('button');
+      btn.innerText = option.text;
+      btn.onclick = () => {
+        const allButtons = qDiv.querySelectorAll('button');
+        allButtons.forEach(b => b.style.pointerEvents = 'none');
+        btn.classList.add('selected');
+        setTimeout(() => selectOption(option.value), 250);
+      };
+      qDiv.appendChild(btn);
+    });
+    container.appendChild(qDiv);
+    updateProgress();
+  } else {
+    showResult();
+  }
+}
+
+function selectOption(value) {
+  for (let key in value) { score[key] += value[key]; }
+  currentQuestion++;
+  showQuestion();
+}
+
+function updateProgress() {
+  // 修正：將 currentQuestion + 1 確保在回答完最後一題時能達到 100%
+  let percent = ((currentQuestion + 1) / quizData.length) * 100;
+  
+  // 限制最大值為 100
+  if (percent > 100) percent = 100;
+
+  document.getElementById("progress-bar").style.width = percent + "%";
+  document.getElementById("current-q").innerText = Math.min(currentQuestion + 1, quizData.length);
+}
+
+function getPoint(cx, cy, r, angle) {
+  const rad = (angle - 90) * (Math.PI / 180);
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function showResult() {
+  const container = document.getElementById('quiz-container');
+  const resultDiv = document.getElementById('result');
+  container.innerHTML = `<div class="loading-container"><div class="spinner"></div><p>正在分析你的拖延小夥伴...</p></div>`;
+
+  const characterData = {
+    avoid: { name: "", img: "images/逃避.png", title: "逃避型-AVOID", fileNo: "001-AV", desc: "面對高難度或評價性任務容易退縮。當任務像怪獸一樣出現時，你的第一直覺是：『只要我看不到它，它就看不到我。』", advice: "試著把大蛋糕拆成小蛋糕，逃避也許是一種保護，但我也可以練習著面對" },
+    dizzy: { name: "", img: "images/分心.png", title: "分心型-DIZZY", fileNo: "002-DZ", desc: "你的世界充滿著好奇的魅力！原本要寫報告，結果卻被手機訊息拉走，最後在各種瑣事中度過了一天。", advice: "工作時把手機收起來，保持工作環境的整潔，每次只給自己一個視窗的專注空間。" },
+    anxi: { name: "", img: "images/焦慮.png", title: "焦慮型-ANXI", fileNo: "003-AX", desc: "你在起跑線前想了 100 種失敗的可能。因為太害怕做不好，導致在還沒行動前能量就已經耗盡了。", advice: "專注於『開始』，而不是『完成』。" },
+    lopie: { name: "", img: "images/內耗.png", title: "內耗型-LOPIE", fileNo: "004-LP", desc: "你的大腦裡有兩個自己持續在拔河。導致容易想得太多、懷疑自我而原地轉圈，遲遲無法做出任何決定。", advice: "設定一個 5 分鐘鬧鐘，時間一到就停止思考，與其反覆設想結果，不如先跨出一小步，讓現實告訴我們答案。" },
+    perfy: { name: "", img: "images/完美.png", title: "完美型-PERFY", fileNo: "005-PF", desc: "你不是在偷懶，你是在『追求極致』。為了修好那 1 公分的差距，你總是與任務並肩作戰到最後一刻。", advice: "練習接受『完成優於完美』，先求有再求好。" }
+  };
+
+  setTimeout(() => {
+    container.innerHTML = "";
+    const maxPerType = 6;
+    const percentages = {
+      avoid: Math.round((score.avoid / maxPerType) * 100),
+      dizzy: Math.round((score.dizzy / maxPerType) * 100),
+      anxi:  Math.round((score.anxi  / maxPerType) * 100),
+      lopie: Math.round((score.lopie / maxPerType) * 100),
+      perfy: Math.round((score.perfy / maxPerType) * 100)
+    };
+    let topType = Object.keys(percentages).reduce((a, b) => percentages[a] > percentages[b] ? a : b);
+    const char = characterData[topType];
+    const points = [
+      getPoint(100, 100, 68 * (percentages.anxi/100), 0),
+      getPoint(100, 100, 68 * (percentages.perfy/100), 72),
+      getPoint(100, 100, 68 * (percentages.avoid/100), 144),
+      getPoint(100, 100, 68 * (percentages.dizzy/100), 216),
+      getPoint(100, 100, 68 * (percentages.lopie/100), 288)
+    ];
+    const polyPoints = points.map(p => `${p.x},${p.y}`).join(' ');
+
+    resultDiv.innerHTML = `
+   
+      <div class="result-card" id="capture-area">
+         <div class="left-index">DE-ENCRYPTED DATA // SECTION B</div> 
+        <style>.result-card::after { content: "DE-FILE NO. ${char.fileNo}" !important; }</style>
+
+        <h4>Delay 拖延分析報告</h4>
+        <div class="top-result-badge">${char.name}</div>
+
+        <div class="radar-chart">
+          <svg viewBox="-40 -40 280 280" style="overflow: visible; width: 100%; max-width: 250px;">
+            <polygon points="100,20 176,75 147,164 53,164 24,75" class="grid-bg"/>
+            <polygon points="100,60 138,87 123,132 77,132 62,87" class="grid-bg"/>
+            <polygon points="${polyPoints}" class="data-poly"/>
+            <text x="100" y="5" text-anchor="middle">焦慮</text> 
+            <text x="195" y="75" text-anchor="start">完美</text>
+            <text x="165" y="195" text-anchor="middle">逃避</text>
+            <text x="35" y="195" text-anchor="middle">分心</text>
+            <text x="5" y="75" text-anchor="end">內耗</text>
+          </svg>
+        </div>
+
+        <div class="character-illustration" style="text-align: center; margin: 10px 0;">
+            <img src="${char.img}" style="width: 110px; height: 110px; object-fit: contain; filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.1));">
+        </div>
+
+        <div class="personality-content" style="padding: 0 20px; text-align: left; margin-top: -10px;">
+            <p style="font-weight: bold; font-size: 18px; margin-bottom: 5px; text-align: center;">【${char.title}】</p>
+            <p style="font-size: 15px; color: #444; line-height: 1.6;">${char.desc}</p>
+            
+            <div style="background: #fff; padding: 15px; border-radius: 12px; margin-top: 20px; border: 2px solid #000;">
+                <strong>💡 給你的能量解藥：</strong><br>
+                <span style="font-size: 14px; color: #333;">${char.advice}</span>
+            </div>
+        </div>
+        
+        <div class="result-actions" style="margin-top: 30px; text-align: center;">
+            <button onclick="downloadImage()" class="download-btn">保存分析報告</button>
+            <button onclick="window.location.reload()" class="retry-btn">重新測驗</button>
+        </div>
+      </div>`;
+  }, 1500);
+}
+
+function downloadImage() {
+  const target = document.getElementById('capture-area');
+  
+  if (!target) {
+    alert("找不到分析報告區域，請重新測驗");
+    return;
+  }
+
+  // 1. 顯示載入提示
+  const originalBtn = document.querySelector('.download-btn');
+  const originalText = originalBtn.innerText;
+  originalBtn.innerText = "生成報告中...";
+  originalBtn.disabled = true;
+
+  // 2. 執行截圖
+  html2canvas(target, {
+    backgroundColor: "#ffffff",
+    scale: 3,          // 進一步提高清晰度
+    useCORS: true,     // 允許跨域圖片
+    allowTaint: false, // 這裡必須設為 false 才能在有圖片時正確導出
+    logging: true,     // 開啟後可在 F12 主控台看到詳細報錯
+    letterRendering: true,
+    scrollX: 0,
+    scrollY: -window.scrollY // 解決頁面捲動導致的位移問題
+  }).then(canvas => {
+    // 轉換成圖片並下載
+    const imageData = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = `DelayReport_${new Date().getTime()}.png`;
+    link.href = imageData;
+    link.click();
+    
+    // 恢復按鈕
+    originalBtn.innerText = originalText;
+    originalBtn.disabled = false;
+  }).catch(err => {
+    console.error("html2canvas 報錯內容:", err);
+    originalBtn.innerText = originalText;
+    originalBtn.disabled = false;
+    alert("保存失敗！建議：\n1. 請使用瀏覽器（Chrome/Safari）開啟\n2. 確保在伺服器環境執行");
+  });
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
