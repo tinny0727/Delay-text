@@ -171,6 +171,8 @@ h4{
   background:#fff;
   cursor:pointer;
   transition:.2s;
+    box-shadow: 5px 5px 0 #000;
+     transition: all 0.2s ease; /* 澧炲姞骞虫粦閬庢浮 */
 }
 
 .question button:hover{
@@ -402,20 +404,25 @@ svg text {
 }
 
 /* 在左側線條旁加一個旋轉的裝飾文字 */
+/* --- 修正：確保截圖時左側小文字方向正確 --- */
 .result-card .left-index {
     position: absolute;
-    left: 5px;
-    top: 100px;
-    writing-mode: vertical-rl;
+    left: 10px;      /* 稍微往右移一點，避免截圖切到 */
+    top: 280px;
+    
+    /* 1. 關鍵修正：取消直寫模式，改用旋轉 */
+    writing-mode: horizontal-tb !important; 
+    transform: rotate(-90deg) !important;   /* 逆時針轉 90 度 */
+    transform-origin: left center !important;
+    
     font-family: 'Courier New', monospace;
-    font-size: 9px;
+    font-size: 10px;
     color: #bbb;
     letter-spacing: 2px;
     text-transform: uppercase;
-    transform: rotate(180deg); /* 讓文字方向由下而上 */
+    white-space: nowrap !important; /* 確保不換行 */
     z-index: 1;
 }
-
 /* 檔案右上角的編號（LOPIE 專屬感覺） */
 .result-card::after {
     content: "DE-FILE NO. 004-LP";
@@ -442,8 +449,8 @@ svg text {
 .personality-content p[style*="font-weight: bold"] {
     border-bottom: 2px solid #000;
     display: inline-block;
-    padding-bottom: 5%;
-    margin-bottom: 20px !important;
+    padding-bottom: 2px;
+    margin-bottom: 15px !important;
     position: relative;
     z-index: 2; 
 }
@@ -481,6 +488,14 @@ svg text {
     margin-bottom: 8px;
 }
 
+/* 調整按鈕與上方解藥區的距離 */
+.result-actions {
+    margin-top: 15px !important; /* 從 30px 縮小到 15px，可依喜好調整 */
+    text-align: center;
+    padding-bottom: 10px; /* 增加一點底部緩衝，避免太貼卡片邊緣 */
+}
+
+
 .download-btn,
 .retry-btn {
   background: var(--main-green);
@@ -489,7 +504,7 @@ svg text {
   border-radius: 40px;
   font-weight: bold;
   cursor: pointer;
-  margin: 10px 5px;
+  margin: 30px 15px;
   box-shadow: 4px 4px 0 #000;
   transition: all 0.2s ease; /* 澧炲姞骞虫粦閬庢浮 */
   display: inline-block;
