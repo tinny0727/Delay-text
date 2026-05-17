@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Delay小夥伴測驗</title>
 <link rel="stylesheet" href="style.css">
+
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
@@ -12,10 +13,12 @@
   <img src="images/baitou.png" alt="biaotou">
    </header>
   
-
+<button onclick="backToHome()" class="game-back-btn">&lt; 返回選單</button>
 <h2>Delay小夥伴測驗</h2>
 <h3>快來看看你是哪一型拖延小夥伴吧！
 經常/偶爾/很少</h3>
+
+
 
 <div class="progress-wrap">
   <div class="progress-track">
@@ -32,6 +35,9 @@
 <script>
 // --- 1. 背景特效 ---
 // --- 1. 背景特效 ---
+function backToHome() {
+    window.location.href = "https://tinny0727.github.io/Delay-home/"; // 根據你的檔案層級決定退幾層
+}
 function createGlitchBlocks() {
     const header = document.querySelector('header');
     if (!header) return;
